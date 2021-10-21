@@ -4,7 +4,8 @@ import random
 import discord
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(encoding='utf8')
+
 TOKEN = os.getenv('DISCORD_TOKEN')
 BANNED_SENTENCES = os.getenv('BANNED_SENTENCES')
 RESPONSES = os.getenv('RESPONSES')
