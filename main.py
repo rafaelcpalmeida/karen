@@ -1,15 +1,24 @@
 import os
 import random
+import sys
 
 import discord
 from dotenv import load_dotenv
 
 load_dotenv(encoding='utf8')
 
-TOKEN = os.getenv('DISCORD_TOKEN')
-BANNED_SENTENCES = os.getenv('BANNED_SENTENCES')
-RESPONSES = os.getenv('RESPONSES')
-EMOJIS = os.getenv('EMOJIS')
+TOKEN = os.getenv('DISCORD_TOKEN') or None
+if TOKEN is None:
+    sys.exit("DISCORD_TOKEN not defined")
+BANNED_SENTENCES = os.getenv('BANNED_SENTENCES') or None
+if BANNED_SENTENCES is None:
+    sys.exit("BANNED_SENTENCES not defined")
+RESPONSES = os.getenv('RESPONSES') or None
+if RESPONSES is None:
+    sys.exit("RESPONSES not defined")
+EMOJIS = os.getenv('EMOJIS') or None
+if EMOJIS is None:
+    sys.exit("EMOJIS not defined")
 
 BANNED_SENTENCES = BANNED_SENTENCES.split(",")
 RESPONSES = RESPONSES.split(",")
