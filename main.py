@@ -19,10 +19,14 @@ if RESPONSES is None:
 EMOJIS = os.getenv('EMOJIS') or None
 if EMOJIS is None:
     sys.exit("EMOJIS not defined")
+SALUTATIONS = os.getenv('SALUTATIONS') or None
+if SALUTATIONS is None:
+    sys.exit("SALUTATIONS not defined")
 
 BANNED_SENTENCES = BANNED_SENTENCES.split(",")
 RESPONSES = RESPONSES.split(",")
 EMOJIS = EMOJIS.split(",")
+SALUTATIONS = SALUTATIONS.split(",")
 
 client = discord.Client()
 
@@ -34,14 +38,19 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    emoji = random.choice(EMOJIS)
+
     if message.author == client.user:
         return
+
+    if client.user.mentioned_in(message):
+        response = random.choice(SALUTATIONS)
+        await message.channel.send(f"<@{message.author.id}>, {response} {emoji}")
 
     received_message = message.content.lower()
     if any(map(received_message.__contains__, BANNED_SENTENCES)):
         response = random.choice(RESPONSES).replace("[PLACEHOLDER]", next(substring for substring in BANNED_SENTENCES
                                                                           if substring in received_message))
-        emoji = random.choice(EMOJIS)
 
         await message.delete()
         await message.channel.send(f"<@{message.author.id}>, {response} {emoji}")
